@@ -6,6 +6,7 @@
  * @var \Cake\Collection\CollectionInterface|string[] $tags
  */
 ?>
+
 <div class="row">
     <aside class="column">
         <div class="side-nav">
@@ -22,7 +23,7 @@
                     echo $this->Form->control('title');
                     echo $this->Form->control('description');
                     echo $this->Form->control('url');
-                    echo $this->Form->input('tag_string', ['type' => 'text']);
+                    echo $this->Form->control('tags');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

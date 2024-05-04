@@ -67,34 +67,17 @@ class BookmarksController extends AppController
      */
     public function add()
     {
-        // Crea una nueva entidad Bookmark.
-        $bookmark = $this->Bookmarks->newEntity();
-
-        // Verifica si la solicitud es de tipo POST (es decir, si se envió un formulario para agregar un favorito).
+        $bookmark = $this->Bookmarks->newEntity($this->request->getData()); // Pasa los datos del formulario
         if ($this->request->is('post')) {
-            // Se parchea (patch) la entidad Bookmark con los datos de la solicitud.
-            $bookmark = $this->Bookmarks->patchEntity($bookmark, $this->request->getData());
-            
-            // Se establece el user_id del bookmark como el ID del usuario autenticado.
             $bookmark->user_id = $this->Auth->user('id');
-            
-            // Se intenta guardar el bookmark en la base de datos.
             if ($this->Bookmarks->save($bookmark)) {
-                // Si se guarda correctamente, se muestra un mensaje de éxito y se redirige al usuario a la página index.
                 $this->Flash->success('El favorito se ha guardado.');
                 return $this->redirect(['action' => 'index']);
             }
-            // Si no se guarda correctamente, se muestra un mensaje de error.
             $this->Flash->error('El favorito podría no haberse guardado. Por favor, inténtalo de nuevo.');
         }
-
-        // Se obtienen los tags disponibles para los favoritos.
         $tags = $this->Bookmarks->Tags->find('list');
-
-        // Se envían los datos de la entidad bookmark y los tags a la vista.
         $this->set(compact('bookmark', 'tags'));
-
-        // Se establece la serialización de la entidad bookmark para su uso en la API.
         $this->set('_serialize', ['bookmark']);
     }
 
